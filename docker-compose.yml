@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: impactengine
+      POSTGRES_USER: impactengine
+      POSTGRES_PASSWORD: impactengine
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://impactengine:impactengine@db:5432/impactengine
+      CORS_ORIGINS: http://localhost:5174
+    depends_on:
+      - db
+    ports:
+      - "8001:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      VITE_API_BASE_URL: http://localhost:8001
+    depends_on:
+      - backend
+    ports:
+      - "5174:5173"
+
+volumes:
+  postgres-data:
