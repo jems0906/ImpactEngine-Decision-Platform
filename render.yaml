@@ -17,10 +17,7 @@ services:
           name: impactengine-db
           property: connectionString
       - key: CORS_ORIGINS
-        fromService:
-          type: web
-          name: impactengine-frontend
-          property: url
+        value: https://impactengine-frontend.onrender.com
 
   - type: web
     name: impactengine-frontend
@@ -31,10 +28,7 @@ services:
     plan: free
     envVars:
       - key: VITE_API_BASE_URL
-        fromService:
-          type: web
-          name: impactengine-backend
-          property: url
+        value: https://impactengine-backend.onrender.com
     headers:
       - path: /*
         name: Cache-Control
